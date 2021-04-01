@@ -80,7 +80,7 @@ class Action:
         """ GHAPI推送 """
         dt = datetime.now()
         time = dt.strftime('%Y-%m-%d')
-        url = f'{self.ghapi}'
+        url = f'https://{self.ghapi}.send'
         data = {
             'title': f'资讯热文推送-{time}',
             'desp': f'{"".join(self.contents)}'
