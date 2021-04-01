@@ -23,9 +23,9 @@ jobs:
         run: pip install -r ./requirements.txt
       - name: 'Working'
         env:
-          SECRET: ${{ secrets.APISECRET }}
+          APISECRET: ${{ secrets.APISECRET }}
         timeout-minutes: 350
         run: |
-          echo APISECRET=$SECRET > .env
+          echo APISECRET=$APISECRET > .env
           python main.py
           rm -f .env
