@@ -53,6 +53,7 @@ class Action:
     def __init__(self):
         load_dotenv(find_dotenv(), override=True)
         self.secret = os.environ.get('SECRET', '')
+        self.ghapi = os.environ.get('GHAPI', '')
         self.contents = []
         self.res = False
         self.task_list = []
@@ -64,6 +65,24 @@ class Action:
         url = f'https://sc.ftqq.com/{self.secret}.send'
         data = {
             'text': f'资讯热文推送-{time}',
+            'desp': f'{"".join(self.contents)}'
+        }
+        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+        try:
+            resp = await self.client.post(url, headers=headers,
+                                          data=parse.urlencode(data), timeout=TIMEOUT)
+            self.res = resp.json()['errno'] == 0
+            print(resp.text)
+        except Exception as e:
+            print(f'something error occurred, message: {e}')
+            
+    async def ghapi(self):
+        """ GHAPI推送 """
+        dt = datetime.now()
+        time = dt.strftime('%Y-%m-%d')
+        url = f'{self.ghapi}'
+        data = {
+            'title': f'资讯热文推送-{time}',
             'desp': f'{"".join(self.contents)}'
         }
         headers = {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -208,6 +227,7 @@ class Action:
 
             await asyncio.gather(*self.task_list)
             await self.servechan()
+            await self.ghapi()
             # print(f'{"".join(self.contents)}')
 
 
