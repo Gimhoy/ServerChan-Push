@@ -24,8 +24,10 @@ jobs:
       - name: 'Working'
         env:
           SECRET: ${{ secrets.SECRET }}
+          GHAPI: ${{ secrets.GHAPI }}
         timeout-minutes: 350
         run: |
           echo SECRET=$SECRET > .env
+          echo GHAPI=$GHAPI > .env
           python main.py
           rm -f .env
