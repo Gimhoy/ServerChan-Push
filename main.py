@@ -76,7 +76,7 @@ class Action:
         except Exception as e:
             print(f'something error occurred, message: {e}')
             
-    async def ghapi(self):
+    async def ghapipush(self):
         """ GHAPI推送 """
         dt = datetime.now()
         time = dt.strftime('%Y-%m-%d')
@@ -227,7 +227,7 @@ class Action:
 
             await asyncio.gather(*self.task_list)
             await self.servechan()
-            await self.ghapi()
+            await self.ghapipush()
             # print(f'{"".join(self.contents)}')
 
 
